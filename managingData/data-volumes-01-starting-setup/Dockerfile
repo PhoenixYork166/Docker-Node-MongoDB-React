@@ -1,4 +1,9 @@
-FROM node:14
+FROM node:22
+
+ARG TIME_ZONE=Asia/Shanghai
+ENV TZ=$TIME_ZONE
+
+ARG DEFAULT_PORT=8080
 
 WORKDIR /app
 
@@ -9,7 +14,16 @@ RUN npm install
 
 COPY . .
 
-# See server.js app.listen(3002);
-EXPOSE 3002
+ENV PORT $DEFAULT_PORT
 
-CMD ["node", "server.js"]
+USER root
+
+# See server.js app.listen(8080);
+EXPOSE $PORT
+
+# VOLUME = array[] of strings
+# without specifying host directory => Docker decides for us
+#VOLUME [ "/app/feedback" ]
+#VOLUME [ "/app/temp" ]
+
+CMD [ "npm", "start" ]

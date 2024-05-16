@@ -1,11 +1,19 @@
 const fs = require('fs').promises;
-const exists = require('fs').exists;
 const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+const ensureDirectoryExistence = async (filePath) => {
+  const dirname = path.dirname(filePath);
+  try {
+    await fs.access(dirname);
+  } catch (error) {
+    await fs.mkdir(dirname, { recursive: true });
+  }
+};
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -31,15 +39,28 @@ app.post('/create', async (req, res) => {
   const tempFilePath = path.join(__dirname, 'temp', adjTitle + '.txt');
   const finalFilePath = path.join(__dirname, 'feedback', adjTitle + '.txt');
 
-  await fs.writeFile(tempFilePath, content);
-  exists(finalFilePath, async (exists) => {
-    if (exists) {
+  console.log('TEST');
+
+  try {
+    await ensureDirectoryExistence(tempFilePath);
+    await ensureDirectoryExistence(finalFilePath);
+    await fs.writeFile(tempFilePath, content);
+
+    try {
+      // Trying to access the file
+      await fs.access(finalFilePath); 
       res.redirect('/exists');
-    } else {
-      await fs.rename(tempFilePath, finalFilePath);
+    } catch {
+      await fs.copyFile(tempFilePath, finalFilePath);
+      await fs.unlink(tempFilePath);
       res.redirect('/');
     }
-  });
+  } catch (error) {
+    console.error('Error handling create request:', error);
+    res.status(500).send('Server error occurred');
+  }
+  
 });
 
-app.listen(3002);
+//app.listen(8080);
+app.listen(process.env.PORT);

@@ -69,7 +69,6 @@ RUN apt-get install -y unzip
 RUN apt-get install -y ettercap-graphical
 RUN apt-get install -y make
 RUN apt-get install -y snapd
-RUN apt-get install -y tee
 RUN apt-get install -y cassandra
 RUN apt-get install -y postgresql
 
