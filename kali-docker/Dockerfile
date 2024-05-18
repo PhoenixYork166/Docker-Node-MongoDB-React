@@ -1,9 +1,10 @@
 FROM kalilinux/kali-rolling
 
+ARG TIME_ZONE=Asia/Shanghai
 # Set environment variables for APT
+ENV TZ=$TIME_ZONE
 ENV LANG=C.UTF-8
 ENV DEBIAN_FRONTEND=interactive
-ENV TZ=Asia/Shanghai
 
 # Set the working directory to container's /tools
 WORKDIR /tools
