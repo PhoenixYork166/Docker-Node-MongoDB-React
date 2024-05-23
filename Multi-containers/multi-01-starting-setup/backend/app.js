@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -10,6 +11,7 @@ const Goal = require('./models/goal');
 
 const app = express();
 
+// Reading ./logs/access.log w/ File System module
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, 'logs', 'access.log'),
   { flags: 'a' }
@@ -17,12 +19,16 @@ const accessLogStream = fs.createWriteStream(
 
 app.use(morgan('combined', { stream: accessLogStream }));
 
+// Using request.body parser middleware with Express
 app.use(bodyParser.json());
+
+// Allow fetching Backend for CORS
+app.use(cors());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
@@ -30,6 +36,8 @@ app.get('/goals', async (req, res) => {
   console.log('TRYING TO FETCH GOALS');
   try {
     const goals = await Goal.find();
+
+    // response returning a goal object
     res.status(200).json({
       goals: goals.map((goal) => ({
         id: goal.id,
@@ -84,7 +92,8 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://localhost:27017/course-goals',
+  // MongoDB connection string
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -94,8 +103,13 @@ mongoose.connect(
       console.error('FAILED TO CONNECT TO MONGODB');
       console.error(err);
     } else {
+      const port = process.env.PORT || 3001;
+    // const DATABASE_URL = process.env.DATABASE_URL
+    app.listen(port, () => {
+        console.log(`app is running on port: ${port}`);
+    })
       console.log('CONNECTED TO MONGODB');
-      app.listen(80);
+      //app.listen(3000);
     }
   }
 );

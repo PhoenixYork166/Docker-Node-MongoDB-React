@@ -8,20 +8,31 @@ function App() {
   const [loadedGoals, setLoadedGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const backendPort = '3001';
 
+  // Keep watching data fetching
   useEffect(function () {
+
+    // Declare an async function to fetch data
     async function fetchData() {
+      // Initially, when data are NOT yet fetched
+      // setIsLoading(true)
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://localhost/goals');
+        // fetching backend endpoint `http://localhost:${backendPort}/goals`
+        const response = await fetch(`http://localhost:${backendPort}/goals`);
 
+        // top level await
         const resData = await response.json();
 
+        // if response.ok does NOT exist
         if (!response.ok) {
           throw new Error(resData.message || 'Fetching the goals failed.');
         }
 
+        // else setState to store resData.goals 
+        // to this.state.loadedGoals
         setLoadedGoals(resData.goals);
       } catch (err) {
         setError(
@@ -29,17 +40,24 @@ function App() {
             'Fetching goals failed - the server responsed with an error.'
         );
       }
+      
+      // Once loadedGoals are stored in this.state.loadedGoals
+      // setState isLoading back to false
       setIsLoading(false);
     }
 
+    // execute async fetchData callback
     fetchData();
+
+    // append to a state array
   }, []);
 
   async function addGoalHandler(goalText) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals', {
+      const response = await fetch(`http://localhost:${backendPort}/goals`, {
+      // const response = await fetch(`http://localhost/goals`, {
         method: 'POST',
         body: JSON.stringify({
           text: goalText,
@@ -78,7 +96,8 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost/goals/' + goalId, {
+      const response = await fetch(`http://localhost:${backendPort}/goals/` + goalId, {
+      // const response = await fetch(`http://localhost/goals/` + goalId, {
         method: 'DELETE',
       });
 
