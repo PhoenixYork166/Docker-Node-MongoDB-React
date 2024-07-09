@@ -91,9 +91,13 @@ app.delete('/goals/:id', async (req, res) => {
   }
 });
 
+const uri = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`;
+
+const uri2 = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals`;
+
 mongoose.connect(
-  // MongoDB connection string
-  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
+  // MongoDB connection string written in Dockerfile
+  uri,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

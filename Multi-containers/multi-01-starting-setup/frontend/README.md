@@ -1,3 +1,23 @@
+<h1>Using this repository with Docker</h1>
+<br>
+<h2>Please navigate to this folder using 'cd' command</h2>
+<br>
+<h2>For bug-fixing Frontend</h2>
+<h2>Then bash ./bugfix-frontend.sh</h2>
+<br>
+<h2>For building a Docker image</h2>
+<h2>Then bash ./build-frontend.sh</h2>
+<br>
+<h2>For starting a Docker image</h2>
+<h2>Then bash ./start-frontend.sh</h2>
+<br>
+<h2>For stopping a Docker image</h2>
+<h2>Then bash ./stop-frontend.sh</h2>
+<br>
+<h2>For rebuilding a Docker image</h2>
+<h2>Then bash ./rebuild-frontend.sh</h2>
+
+## Using this Repository locally
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
