@@ -1,7 +1,7 @@
 <h1>DevOps Docker</h1>
 <p>Welcome to learning docker together!</p>
 <br>
-<img src="./images/Docker.png" alt="Docker">
+<img src="./images/docker.png" alt="Docker">
 <img src="./images/node-mongodb-react-docker.jpg" alt="node-mongodb-react-docker" title="Node MongoDB React Docker" width="800" height="450" />
 <br>
 <h1>Before Started</h1>
