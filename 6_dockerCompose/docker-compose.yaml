@@ -1,0 +1,32 @@
+# Version of Docker-compose
+version: "3.8"
+services: 
+  # direct child service => strict indentation
+  mongodb:
+    # docker container instances & need to specify detach mode
+    image: 'mongo'
+    volumes: 
+      # May have multiple volumes
+      # hostVolume:/containerVolumePath
+      - data:/data/db
+
+    # environment:
+      # 2 kinds of syntax
+      #- MONGO_INITDB_ROOT_USERNAME=root
+      # vs
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: rootPassword
+    
+    env_file: 
+      - ./env/mongo.env
+
+    # We may specify a docker network, yet it auto-creates for us like a bundle
+    #networks:
+    #  - networkName
+
+  backend:
+    docker run --name goals-backend -v "$(pwd)":/app -v logs:/app/logs -v /app/node_modules --rm -d -p 3001:3001 --network fullstack-network1 goals-node:latest;
+  frontend:
+    docker run --name goals-frontend --rm -it -v "$(pwd)":/app/src --network fullstack-network1 -p 3000:3000 goals-react:latest;
+
+
