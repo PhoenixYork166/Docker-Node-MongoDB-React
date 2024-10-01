@@ -1,5 +1,5 @@
 {
-  "name": "utility",
+  "name": "node-utility",
   "version": "1.0.0",
   "description": "utility container testing",
   "main": "index.js",
