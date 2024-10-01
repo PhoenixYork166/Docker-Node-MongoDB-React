@@ -1,32 +1,67 @@
-# Version of Docker-compose
 version: "3.8"
 services: 
-  # direct child service => strict indentation
+  # service name 'mongodb' can be used in code for connections inside Docker Engine
   mongodb:
-    # docker container instances & need to specify detach mode
-    image: 'mongo'
+    container_name: mongodb-goals
+    # Use either image: (pull image) OR build: (using Dockerfile)
+    # image: 'mongo'
+    build:
+      context: ./mongodb
+      dockerfile: mongodb.Dockerfile
     volumes: 
-      # May have multiple volumes
-      # hostVolume:/containerVolumePath
-      - data:/data/db
-
-    # environment:
-      # 2 kinds of syntax
-      #- MONGO_INITDB_ROOT_USERNAME=root
-      # vs
-      # MONGO_INITDB_ROOT_USERNAME: root
-      # MONGO_INITDB_ROOT_PASSWORD: rootPassword
-    
+      # A microservice may have multiple volumes
+      # Named volume for MongoDB
+      - ./data:/data/db
+    ports:
+      - "27017:27017"    
     env_file: 
       - ./env/mongo.env
 
     # We may specify a docker network, yet it auto-creates for us like a bundle
     #networks:
-    #  - networkName
+    # - networkName
 
   backend:
-    docker run --name goals-backend -v "$(pwd)":/app -v logs:/app/logs -v /app/node_modules --rm -d -p 3001:3001 --network fullstack-network1 goals-node:latest;
+    #image: 'node'
+    container_name: node-goals
+    build:
+      context: ./backend
+      dockerfile: nodejs.Dockerfile
+      args:
+        BACKEND_PORT: 3001
+    working_dir: /app
+    command: npm start
+    ports:
+      - '3001:3001'
+    volumes: 
+      - logs:/app/logs # Named Volume
+      - ./backend:/app # Bind Mount - Sharing everything in 'backend' folder to docker backend container
+      - /app/node_modules # Anonymous Volumes
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
   frontend:
-    docker run --name goals-frontend --rm -it -v "$(pwd)":/app/src --network fullstack-network1 -p 3000:3000 goals-react:latest;
+    #image: 'node'
+    container_name: react-goals
+    build:
+      context: ./frontend
+      dockerfile: react.Dockerfile
+    volumes:
+      # Bind Mount
+      - ./frontend/src:/app/src
+    command: npm start
+    ports:
+      - '3000:3000'
+    # docker run -it interactive mode
+    stdin_open: true # frontend needs an open input connection
+    tty: true #
+    depends_on:
+      - backend
 
-
+# Named volumes parallel to services indentation level
+# Anonymous Volumes & Bind Mounts are NOT specified here
+volumes:
+  data:
+  logs:

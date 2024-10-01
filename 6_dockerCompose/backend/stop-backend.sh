@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker container stop goals-backend;
+container_name = 'goals-backend';
+docker container stop $container_name;

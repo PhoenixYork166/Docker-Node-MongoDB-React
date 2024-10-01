@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker build -t goals-react:latest -f ./Dockerfile .
+# $(pwd) = projectFolder/backend
+docker build -t goals-react:latest -f ./react.Dockerfile .

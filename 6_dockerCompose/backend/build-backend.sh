@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker build -t goals-node:latest -f ./Dockerfile .
+# $(pwd) = projectFolder/backend
+docker build -t goals-node:latest -f ./nodejs.Dockerfile .
