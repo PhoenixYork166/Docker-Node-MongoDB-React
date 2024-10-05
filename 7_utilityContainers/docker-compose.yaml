@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  utility:
+    build: 
+      context: ./utility
+      dockerfile: utility.Dockerfile
+    # Allow standard input from users in terminal
+    stdin_open: true
+    tty: true
+    volumes: 
+      # Bind Mount host machine ./utility folder to container folder /app
+      - ./utility:/app
+      

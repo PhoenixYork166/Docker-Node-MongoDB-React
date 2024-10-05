@@ -1,0 +1,26 @@
+{
+  "name": "utility",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhoenixYork166/Docker-Node-MongoDB-React.git"
+  },
+  "keywords": [
+    "docker-compose-utility"
+  ],
+  "author": "docker-composer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PhoenixYork166/Docker-Node-MongoDB-React/issues"
+  },
+  "homepage": "https://github.com/PhoenixYork166/Docker-Node-MongoDB-React#readme"
+}
