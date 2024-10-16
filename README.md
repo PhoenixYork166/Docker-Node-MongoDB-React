@@ -1,8 +1,8 @@
 <h1>Docker</h1>
 <p>Welcome to learning Docker & Docker-compose together!</p>
 <br>
-<img src="./images/docker.png" alt="Docker">
-<img src="./images/node-mongodb-react-docker.jpg" alt="node-mongodb-react-docker" title="Node MongoDB React Docker" width="800" height="450" />
+<img src="./2_images/docker.png" alt="Docker">
+<img src="./2_images/node-mongodb-react-docker.jpg" alt="node-mongodb-react-docker" title="Node MongoDB React Docker" width="800" height="450" />
 <br>
 <h1>Before Started</h1>
 <h1>1: What is Docker</h1>
